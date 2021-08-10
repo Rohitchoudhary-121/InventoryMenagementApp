@@ -1,0 +1,28 @@
+.inner-form {
+    width: 60%;
+    margin: auto;
+}
+
+.home-inner-form {
+    width: 40%;
+    margin: auto;
+}
+
+.mycard {
+    width: 71%;
+    margin: auto;
+}
+
+.homecard {
+    width: 100%;
+    margin: auto;
+}
+
+.save-btn {
+    width: 60%;
+    margin-left: 95px;
+}
+
+.actions {
+    cursor: pointer;
+}

@@ -1,0 +1,155 @@
+<html>
+
+<head>
+    <title>AngularJS First Application</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- Local CSS only -->
+    <link rel="stylesheet" href="./home.css">
+
+    <!-- AngularJs CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="./pouchdb-7.2.1.min.js"></script>
+    <!-- Bootstrap only -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+        integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+        crossorigin="anonymous"></script>
+</head>
+
+<body style="background: #f7faff;">
+    <div class="pl-5 pr-5 pt-2" ng-app="myApp">
+        <div ng-controller="HomeController">
+            <!--start: Form Section -->
+            <div class="card homecard shadow p-3 mb-5 bg-white rounded">
+                <h5 style="float: left;margin-left: auto;">user: {{user}}</h5>
+                <input style="width: 100px;margin-left: auto;" class="btn-sm btn-dark  " type="button" value="LogOut"
+                    ng-click="logout()" />
+
+                <h5 class="card-header" style="background: #fff;">Inventory Management (Computers & Mobiles)</h5>
+                <div class="card-body">
+                    <div class="home-inner-form">
+                        <h5 class="card-title">Create New Products</h5>
+                        <p class="card-text"></p>
+                        <label>Product Name</label>
+                        <input class="form-Control" type="text" name="name" ng-model="product.name" />
+
+                        <label>Price</label>
+                        <input class="form-Control" type="text" name="price" ng-model="product.price" />
+
+                        <label>Company</label>
+                        <input class="form-Control" type="text" name="company" ng-model="product.company" />
+
+                        <label>RAM</label>
+                        <input class="form-Control" type="text" name="ram" ng-model="product.ram" />
+
+                        <label>ROM</label>
+                        <input class="form-Control" type="text" name="rom" ng-model="product.rom" />
+
+                        <input type="hidden" ng-model="product._id" />
+                        <input type="hidden" ng-model="product._rev" />
+                        <input class="btn btn-primary mt-4 save-btn " type="button" value="Save" ng-click="saveRecord()"
+                            class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+            <!--end: Form Section -->
+
+            <!--start: Table Section-->
+            <div class="card mt-4 mb-5 shadow p-3 mb-5 bg-white rounded">
+                <div class="card-header">
+                    Products List
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">RevId</th>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Company</th>
+                                <th scope="col">Storage</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="product in products">
+                                <td>{{ product._rev }}</td>
+                                <td>{{ product._id }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.company }}</td>
+                                <td>{{ product.storage }}</td>
+                                <td>
+                                    <a href="#" class="actions" ng-click="edit(product._id)" data-toggle="modal"
+                                        data-target="#editProducts">EDIT</a> |
+                                    <a href="#" class="actions" ng-click="delete(product._id, product._rev)">DELETE</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--end: Table Section-->
+
+            <!--start: Edit Product Section -->
+            <div class="modal fade" id="editProducts" tabindex="-1" aria-labelledby="editProductsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProductsModalLabel">Edit Product Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label>Product Name</label>
+                            <input class="form-Control" type="text" name="name" ng-model="oldProduct.name" />
+
+                            <label>Price</label>
+                            <input class="form-Control" type="text" name="price" ng-model="oldProduct.price" />
+
+                            <label>Company</label>
+                            <input class="form-Control" type="text" name="company" ng-model="oldProduct.company" />
+
+                            <label>RAM</label>
+                            <input class="form-Control" type="text" name="ram" ng-model="oldProduct.ram" />
+
+                            <label>ROM</label>
+                            <input class="form-Control" type="text" name="rom" ng-model="oldProduct.rom" />
+
+                            <input type="hidden" ng-model="oldProduct._id" />
+                            <input type="hidden" ng-model="oldProduct._rev" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" ng-click="updateRecord()" data-dismiss="modal"
+                                class="btn btn-primary">Update
+                                Product</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end: Edit Product Section -->
+
+        </div>
+    </div>
+
+
+    <script src="./controller.js"></script>
+
+    </script>
+
+</body>
+
+</html>
