@@ -2,5 +2,8 @@
   "dependencies": {
     "angular": "^1.8.2",
     "pouchdb": "^7.2.2"
+  },
+  "scripts": {
+    "build": "npm i && node server.js"
   }
 }
